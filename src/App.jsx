@@ -16,6 +16,9 @@ import {useAuth} from "./context/AuthProvider";
 import {auth, db} from "./firebase";
 import {signOut} from "firebase/auth";
 import {defaultStations} from "./utils/defaultStations";
+import {AiOutlinePlus} from "react-icons/ai";
+import extractVideoId from "./utils/extractVideoId";
+import VibeForm from "./components/VibeForm/VibeForm";
 
 let lastPlayedVolume = 0;
 
@@ -34,6 +37,7 @@ function App() {
     link: "https://www.youtube.com/watch?v=5qap5aO4i9A&ab_channel=LofiGirl",
     name: "LofiGirl",
   });
+  const [showModal, setShowModal] = useState(false);
 
   React.useEffect(() => {
     if (user !== null) {
@@ -46,7 +50,7 @@ function App() {
   };
 
   const setMusicState = (link, name) => {
-    const videoId = link.split("=")[1].split("&")[0];
+    const videoId = extractVideoId(link);
     setVideo(`//www.youtube.com/embed/${videoId}?autoplay=1&mute=1&start=1`);
     setStreamingLink({link, name});
     setIsStreaming(true);
@@ -71,6 +75,11 @@ function App() {
       });
   };
 
+  const handleVibeCheck = () => {
+    if (!user) setIsShowLogin(true);
+    else setShowModal((prev) => !prev);
+  };
+
   return (
     <div className='interfaceContainer'>
       <div className='radioContainer'>
@@ -88,6 +97,17 @@ function App() {
         <div className='subHeading'>Focus</div>
         <div className='radioStationsContainer'>
           <div className='radioList'>
+            <motion.div
+              whileHover={{scale: 1.09}}
+              whileTap={{scale: 0.9}}
+              onClick={handleVibeCheck}
+              className='station'
+              style={{margin: "0.5rem auto", padding: "0.2rem", border: "1px solid white"}}
+            >
+              <AiOutlinePlus />
+              Add your favorites
+            </motion.div>
+
             {theStations.map((station) => {
               return (
                 <motion.div
@@ -109,7 +129,8 @@ function App() {
         </a>
       </div>
       <div className='audioControlContainer'>
-        <LoginForm isShowLogin={isShowLogin} setShowLogin={setIsShowLogin} />
+        {user && <VibeForm showModal={showModal} setShowModal={setShowModal} />}
+        {!user && <LoginForm isShowLogin={isShowLogin} setShowLogin={setIsShowLogin} />}
         <div className='audioControl'>
           <motion.div
             whileHover={{scale: 1.09}}

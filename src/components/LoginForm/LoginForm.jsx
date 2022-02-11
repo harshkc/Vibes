@@ -111,7 +111,7 @@ const LoginForm = ({isShowLogin, setShowLogin}) => {
           </form>
           {isRegister ? (
             <div style={{color: "white", paddingBottom: "2rem"}}>
-              Already have an account? Please{" "}
+              Already have an account?
               <span
                 style={{color: "rgb(48, 172, 251)", textDecoration: "underline", cursor: "pointer"}}
                 onClick={() => setIsRegister(false)}
@@ -121,7 +121,7 @@ const LoginForm = ({isShowLogin, setShowLogin}) => {
             </div>
           ) : (
             <div style={{color: "white", paddingBottom: "2rem"}}>
-              {"Don't"} have an account? Please{" "}
+              {"Don't"} have an account?
               <span
                 style={{color: "rgb(48, 172, 251)", textDecoration: "underline", cursor: "pointer"}}
                 onClick={() => setIsRegister(true)}
