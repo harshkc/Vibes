@@ -11,63 +11,39 @@ import loopImg from "./images/loop.png";
 import mute from "./images/mute.png";
 import {motion} from "framer-motion";
 import ReactPlayer from "react-player";
+import LoginForm from "./components/LoginForm/LoginForm";
+import {useAuth} from "./context/AuthProvider";
+import {auth, db} from "./firebase";
+import {signOut} from "firebase/auth";
+import {defaultStations} from "./utils/defaultStations";
 
 let lastPlayedVolume = 0;
 
 function App() {
+  const {user, setUser} = useAuth();
+  const [isShowLogin, setIsShowLogin] = useState(false);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [isLoop, setLoop] = useState(false);
   const [volume, setVolume] = useState(1);
 
+  const [theStations, setTheStations] = useState(defaultStations);
   const [video, setVideo] = useState(`//www.youtube.com/embed/TURbeWK2wwg?autoplay=1&mute=1&start=1`);
   const [streamingLink, setStreamingLink] = useState({
     link: "https://www.youtube.com/watch?v=5qap5aO4i9A&ab_channel=LofiGirl",
     name: "LofiGirl",
   });
 
-  const defaultStations = [
-    {
-      video: "https://www.youtube.com/watch?v=5qap5aO4i9A&ab_channel=LofiGirl",
-      channelName: "Lofi Girl",
-    },
-    {
-      video: "https://www.youtube.com/watch?v=7NOSDKb0HlU&ab_channel=ChillhopMusic",
-      channelName: "Chill Hop Music",
-    },
-    {
-      video: "https://www.youtube.com/watch?v=dIdb_BWkZq4&ab_channel=AmbientRenders",
-      channelName: "Ambient Renders",
-    },
-    {
-      video: "https://www.youtube.com/watch?v=j28Oyq6NnOs&ab_channel=IvyStationRecords",
-      channelName: "Ivy Records",
-    },
-    {
-      video: "https://www.youtube.com/watch?v=w3LWHIz3bMc&ab_channel=nostalgic",
-      channelName: "Anime Vibe",
-    },
-    {
-      video: "https://www.youtube.com/watch?v=kgx4WGK0oNU&ab_channel=%E9%98%BF%E9%B2%8DAbao",
-      channelName: "CloudHop",
-    },
-    {
-      video: "https://www.youtube.com/watch?v=-9gEgshJUuY&ab_channel=lofigeek",
-      channelName: "H5G1 Music",
-    },
-    {
-      video: "https://www.youtube.com/watch?v=uxR_sTZnBtg&ab_channel=StudyMD",
-      channelName: "StudyMD",
-    },
-    {
-      video: "https://www.youtube.com/watch?v=xxgxkjV70Vc&ab_channel=NightrideFM",
-      channelName: "Astral Throb",
-    },
-    {
-      video: "https://www.youtube.com/watch?v=-5KAN9_CzSA&ab_channel=STEEZYASFUCK",
-      channelName: "theJazz Cafe",
-    },
-  ];
+  React.useEffect(() => {
+    if (user !== null) {
+      console.log("hello");
+    }
+  });
+
+  const handleLoginClick = () => {
+    setIsShowLogin((isShowLogin) => !isShowLogin);
+  };
 
   const setMusicState = (link, name) => {
     const videoId = link.split("=")[1].split("&")[0];
@@ -78,20 +54,41 @@ function App() {
   };
 
   const handleEnd = () => {
-    //find the index of object from defaultStations array which matches stationName
-    const index = defaultStations.findIndex((station) => station.channelName === streamingLink.name);
+    //find the index of object from theStations array which matches stationName
+    const index = theStations.findIndex((station) => station.channelName === streamingLink.name);
     //if index is not -1, then set the music state to the next station
-    setMusicState(defaultStations[index + 1].video, defaultStations[index + 1].channelName);
+    setMusicState(theStations[index + 1].video, theStations[index + 1].channelName);
+  };
+
+  const logout = () => {
+    signOut(auth)
+      .then(() => {
+        localStorage.removeItem("BoostUser");
+        setUser(null);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
     <div className='interfaceContainer'>
       <div className='radioContainer'>
-        <div className='logo'>StudyBeats</div>
+        <div className='logo'>Boosted</div>
+        {user ? (
+          <span onClick={logout} className='loginicon'>
+            Logout
+          </span>
+        ) : (
+          <span onClick={handleLoginClick} className='loginicon'>
+            Login
+          </span>
+        )}
+
         <div className='subHeading'>Focus</div>
         <div className='radioStationsContainer'>
           <div className='radioList'>
-            {defaultStations.map((station) => {
+            {theStations.map((station) => {
               return (
                 <motion.div
                   key={station.channelName}
@@ -112,6 +109,7 @@ function App() {
         </a>
       </div>
       <div className='audioControlContainer'>
+        <LoginForm isShowLogin={isShowLogin} setShowLogin={setIsShowLogin} />
         <div className='audioControl'>
           <motion.div
             whileHover={{scale: 1.09}}
