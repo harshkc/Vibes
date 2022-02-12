@@ -38,7 +38,6 @@ const AdditionSettings = ({radio}) => {
 
   return (
     <div className='infoContainer'>
-      <div className='time'></div>
       <div className='songName'>
         <motion.div
           animate={{x: transitionValue}}

@@ -6,7 +6,7 @@ import {doc, setDoc} from "firebase/firestore";
 
 import "./vibeForm.css";
 
-const VibeForm = ({showModal, setShowModal, addAStation}) => {
+const VibeForm = ({showModal, setShowModal, addAStation, theStations}) => {
   const {user} = useAuth();
   const [error, setError] = React.useState(null);
 
@@ -33,10 +33,19 @@ const VibeForm = ({showModal, setShowModal, addAStation}) => {
     const link = e.target.elements.link.value;
     const name = e.target.elements.name.value;
 
+    if (name === "") {
+      setError("Please enter a name for the station");
+      return;
+    }
     //check first if its even a YT link
     const isYtLink = matchYoutubeUrl(link);
     if (!isYtLink) {
       setError("Please enter a YouTube link only");
+      return;
+    }
+    const index = theStations.findIndex((sta) => sta.link === link);
+    if (index !== -1) {
+      setError("You already have this station");
       return;
     }
     //check the video exists
