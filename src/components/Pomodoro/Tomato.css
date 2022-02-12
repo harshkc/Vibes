@@ -1,0 +1,18 @@
+.tomato {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: saturate(180%) blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 3rem;
+  font-weight: bold;
+  font-size: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0.6rem 4rem;
+}
+
+.timer-span {
+  font-weight: bold;
+  padding: 0.5rem 0;
+}
