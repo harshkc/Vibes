@@ -8,8 +8,8 @@
 
 .form-box {
   margin-top: 7vh;
-  opacity: 80%;
-  background: black;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: saturate(180%) blur(10px);
   padding-right: 80px;
   padding-left: 80px;
   border-radius: 20px;

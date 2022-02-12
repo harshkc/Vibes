@@ -3,7 +3,6 @@ import "./styles/audioControl.css";
 import React, {useState} from "react";
 import AdditionSettings from "./components/additionalInfo";
 import triangle from "./images/playBtn.png";
-import github from "./images/github.png";
 import play from "./images/playBtn.png";
 import pauseImg from "./images/pause.png";
 import volumeOn from "./images/volumeOn.png";
@@ -20,6 +19,7 @@ import {defaultStations} from "./utils/defaultStations";
 import {AiOutlinePlus, AiFillDelete} from "react-icons/ai";
 import extractVideoId from "./utils/extractVideoId";
 import VibeForm from "./components/VibeForm/VibeForm";
+import Session from "./components/Pomodoro/Session";
 
 let lastPlayedVolume = 0;
 
@@ -81,7 +81,7 @@ function App() {
     }
     const videoId = extractVideoId(station.link);
     deleteStationFromDB(videoId);
-    handleEnd();
+    if (station.link === streamingLink.link) handleEnd();
     const updatedStations = theStations.filter((sta) => sta.link !== station.link);
     setTheStations(updatedStations);
   };
@@ -101,6 +101,7 @@ function App() {
   const handleEnd = () => {
     //find the index of object from theStations array which matches stationName
     const index = theStations.findIndex((station) => station.link === streamingLink.link);
+    if (index === -1) return;
     setMusicState(theStations[index + 1].link, theStations[index + 1].name);
   };
 
@@ -123,7 +124,7 @@ function App() {
   return (
     <div className='interfaceContainer'>
       <div className='radioContainer'>
-        <div className='logo'>Boosted</div>
+        <div className='logo'>Vibes</div>
         {user ? (
           <span onClick={logout} className='loginicon'>
             Logout
@@ -134,7 +135,6 @@ function App() {
           </span>
         )}
 
-        <div className='subHeading'>Focus</div>
         <div className='radioStationsContainer'>
           <div className='radioList'>
             <motion.div
@@ -142,10 +142,19 @@ function App() {
               whileTap={{scale: 0.9}}
               onClick={handleVibeCheck}
               className='station'
-              style={{margin: "0.5rem auto", padding: "0.2rem", border: "1px solid white"}}
+              style={{
+                margin: "0.5rem 0.2rem",
+                padding: "0.2rem",
+                border: "1px solid white",
+                borderRadius: "0.5rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "80%",
+              }}
             >
               <AiOutlinePlus />
-              Add your favorites
+              <span style={{fontSize: "14px"}}>Add yours</span>
             </motion.div>
 
             {theStations.map((station) => {
@@ -156,6 +165,7 @@ function App() {
                     whileHover={{scale: 1.09}}
                     whileTap={{scale: 0.9}}
                     className='station'
+                    style={{textAlign: "left"}}
                   >
                     <span
                       style={{float: "left", width: "80%"}}
@@ -173,12 +183,19 @@ function App() {
             })}
           </div>
         </div>
-        <a className='link github' href='https://github.com/harshkc'>
-          <img className='githubLogo' src={github} alt='' /> Github
-        </a>
+      </div>
+      <div style={{position: "absolute", right: "3rem", top: "5rem", zIndex: "1"}}>
+        <Session />
       </div>
       <div className='audioControlContainer'>
-        {user && <VibeForm showModal={showModal} setShowModal={setShowModal} addAStation={addAStation} />}
+        {user && (
+          <VibeForm
+            showModal={showModal}
+            setShowModal={setShowModal}
+            addAStation={addAStation}
+            theStations={theStations}
+          />
+        )}
         {!user && <LoginForm isShowLogin={isShowLogin} setShowLogin={setIsShowLogin} />}
         <div className='audioControl'>
           <motion.div
