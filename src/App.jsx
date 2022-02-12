@@ -1,7 +1,7 @@
 import "./styles/index.css";
 import "./styles/audioControl.css";
 import React, {useState} from "react";
-import AdditionSettings from "./components/additionalInfo";
+import AdditionSettings from "./components/AdditionalSettings";
 import triangle from "./images/playBtn.png";
 import play from "./images/playBtn.png";
 import pauseImg from "./images/pause.png";
@@ -259,7 +259,7 @@ function App() {
       <div className={isPlaying ? "unpauseScreen" : "pauseScreen"}>
         <p style={{marginTop: "30rem"}}>Music Paused</p>
       </div>
-      <AdditionSettings radio={streamingLink.name} />
+      <AdditionSettings radio={streamingLink.name} link={streamingLink.link} />
       <div className='videoContainer'>
         <iframe
           className='vid'

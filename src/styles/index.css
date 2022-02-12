@@ -266,10 +266,6 @@ input[type="range"][orient="vertical"] {
   justify-content: end;
 }
 
-.allign:hover .soundDial {
-  display: block;
-}
-
 .radioStationTitle {
   font-size: 32px;
   width: min-content;
