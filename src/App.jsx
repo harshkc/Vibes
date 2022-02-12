@@ -15,9 +15,9 @@ import LoginForm from "./components/LoginForm/LoginForm";
 import {useAuth} from "./context/AuthProvider";
 import {auth, db} from "./firebase";
 import {signOut} from "firebase/auth";
-import {getDocs, collection} from "firebase/firestore";
+import {getDocs, collection, deleteDoc, doc} from "firebase/firestore";
 import {defaultStations} from "./utils/defaultStations";
-import {AiOutlinePlus} from "react-icons/ai";
+import {AiOutlinePlus, AiFillDelete} from "react-icons/ai";
 import extractVideoId from "./utils/extractVideoId";
 import VibeForm from "./components/VibeForm/VibeForm";
 
@@ -33,6 +33,7 @@ function App() {
   const [volume, setVolume] = useState(1);
 
   const [theStations, setTheStations] = useState(defaultStations);
+  const [adminStations, setAdminStations] = useState([]);
   const [video, setVideo] = useState(`//www.youtube.com/embed/TURbeWK2wwg?autoplay=1&mute=1&start=1`);
   const [streamingLink, setStreamingLink] = useState({
     link: "https://www.youtube.com/watch?v=5qap5aO4i9A&ab_channel=LofiGirl",
@@ -40,17 +41,13 @@ function App() {
   });
   const [showModal, setShowModal] = useState(false);
 
-  const addAStation = (newStation) => {
-    setTheStations((prevStations) => [newStation, ...prevStations]);
-  };
-
   const getStations = async () => {
     try {
       const userStationsSnapshot = await getDocs(collection(db, "users", user.id, "user_stations"));
       const adminStationsSnapshot = await getDocs(collection(db, "admin_stations"));
       const userStations = userStationsSnapshot?.docs?.map((doc) => doc.data());
       const adminStations = adminStationsSnapshot?.docs?.map((doc) => doc.data());
-      console.log({userStations, adminStations});
+      setAdminStations(adminStations);
       setTheStations([...userStations, ...adminStations]);
     } catch (e) {
       console.log(e);
@@ -62,6 +59,32 @@ function App() {
       getStations();
     }
   }, []);
+
+  const addAStation = (newStation) => {
+    setTheStations((prevStations) => [newStation, ...prevStations]);
+  };
+
+  const deleteStationFromDB = async (videoId) => {
+    try {
+      const toDeleteRef = doc(db, "users", user.id, "user_stations", videoId);
+      await deleteDoc(toDeleteRef);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteStation = (station) => {
+    const index = adminStations.findIndex((sta) => sta.link === station.link);
+    if (index !== -1) {
+      alert("Can't delete default stations");
+      return;
+    }
+    const videoId = extractVideoId(station.link);
+    deleteStationFromDB(videoId);
+    handleEnd();
+    const updatedStations = theStations.filter((sta) => sta.link !== station.link);
+    setTheStations(updatedStations);
+  };
 
   const handleLoginClick = () => {
     setIsShowLogin((isShowLogin) => !isShowLogin);
@@ -77,9 +100,8 @@ function App() {
 
   const handleEnd = () => {
     //find the index of object from theStations array which matches stationName
-    const index = theStations.findIndex((station) => station.channelName === streamingLink.name);
-    //if index is not -1, then set the music state to the next station
-    setMusicState(theStations[index + 1].video, theStations[index + 1].channelName);
+    const index = theStations.findIndex((station) => station.link === streamingLink.link);
+    setMusicState(theStations[index + 1].link, theStations[index + 1].name);
   };
 
   const logout = () => {
@@ -128,16 +150,25 @@ function App() {
 
             {theStations.map((station) => {
               return (
-                <motion.div
-                  key={station.name}
-                  whileHover={{scale: 1.09}}
-                  whileTap={{scale: 0.9}}
-                  onClick={() => setMusicState(station.link, station.name)}
-                  className='station'
-                >
-                  <img className='triangle' src={triangle} alt='' />
-                  {station.name}
-                </motion.div>
+                <>
+                  <motion.div
+                    key={station.name}
+                    whileHover={{scale: 1.09}}
+                    whileTap={{scale: 0.9}}
+                    className='station'
+                  >
+                    <span
+                      style={{float: "left", width: "80%"}}
+                      onClick={() => setMusicState(station.link, station.name)}
+                    >
+                      <img className='triangle' src={triangle} alt='' />
+                      {station.name}
+                    </span>
+                    <span onClick={() => deleteStation(station)} style={{float: "right", width: "20%"}}>
+                      <AiFillDelete />
+                    </span>
+                  </motion.div>
+                </>
               );
             })}
           </div>

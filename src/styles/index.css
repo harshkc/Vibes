@@ -151,6 +151,7 @@ body {
   margin-top: 20px;
   text-shadow: 1px 1px rgb(0 0 0 / 70%);
   cursor: pointer;
+  width: 100%;
 }
 
 .station:hover {
