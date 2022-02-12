@@ -4,13 +4,13 @@ import {getAuth} from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBBLx44pTaoI5SGl-5fYsmgqfCbAXDx0Po",
-  authDomain: "boosted-3b543.firebaseapp.com",
-  projectId: "boosted-3b543",
-  storageBucket: "boosted-3b543.appspot.com",
-  messagingSenderId: "444780229691",
-  appId: "1:444780229691:web:42b693f40c0e9df409d81e",
-  measurementId: "G-JBV1KT5P4E",
+  apiKey: import.meta.env.VITE_FB_API_KEY,
+  messagingSenderId: import.meta.env.VITE_FB_MSI,
+  appId: import.meta.env.VITE_FB_APP_ID,
+  measurementId: import.meta.env.VITE_FB_MEASUREMENT_ID,
+  authDomain: "vibes-cf7b4.firebaseapp.com",
+  projectId: "vibes-cf7b4",
+  storageBucket: "vibes-cf7b4.appspot.com",
 };
 
 const app = initializeApp(firebaseConfig);
