@@ -2,12 +2,12 @@ import React from "react";
 import {useAuth} from "../../context/AuthProvider";
 import extractVideoId from "../../utils/extractVideoId";
 import {db} from "../../firebase";
-import {doc, setDoc, getDoc} from "firebase/firestore";
+import {doc, setDoc} from "firebase/firestore";
 
 import "./vibeForm.css";
 
-const VibeForm = ({showModal, setShowModal}) => {
-  const {setUser} = useAuth();
+const VibeForm = ({showModal, setShowModal, addAStation}) => {
+  const {user} = useAuth();
   const [error, setError] = React.useState(null);
 
   function matchYoutubeUrl(url) {
@@ -19,42 +19,51 @@ const VibeForm = ({showModal, setShowModal}) => {
     return false;
   }
 
-  const validateLink = async (link) => {
-    await console.log(img.width);
+  const addStationToDB = async (station, id) => {
+    try {
+      await setDoc(doc(db, "users", user.id, "user_stations", id), station);
+      addAStation(station);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const link = e.target.elements.link.value;
     const name = e.target.elements.name.value;
-    console.log({link, name});
+
+    //check first if its even a YT link
     const isYtLink = matchYoutubeUrl(link);
     if (!isYtLink) {
       setError("Please enter a YouTube link only");
       return;
     }
-    const id = extractVideoId(link);
+    //check the video exists
+    const videoId = extractVideoId(link);
     var img = new Image();
-    img.src = "http://img.youtube.com/vi/" + id + "/mqdefault.jpg";
+    img.src = "http://img.youtube.com/vi/" + videoId + "/mqdefault.jpg";
     img.onload = function () {
       console.log(this.width + " " + this.height);
       //HACK a mq thumbnail has width of 320.
-      //if the video does not exist(therefore thumbnail don't exist), a default thumbnail of 120 width is returned.
+      //if the video does not exist(therefore thumbnail don't exist),
+      // a default thumbnail of 120 width is returned.
       if (this.width === 120) {
         setError("Video does not exist");
         e.target.elements.link.value = "";
         return;
       }
       setError(null);
-      const vibeData = {
+      const station = {
         link: link,
         name: name,
       };
-      console.log(vibeData);
+      addStationToDB(station, videoId);
+      setShowModal(false);
+      // clear all the fields
+      e.target.elements.link.value = "";
+      e.target.elements.name.value = "";
     };
-    //clear all the fields
-    // e.target.elements.link.value = "";
-    // e.target.elements.name.value = "";
   };
 
   return (
@@ -73,7 +82,9 @@ const VibeForm = ({showModal, setShowModal}) => {
             <br></br>
             <input type='submit' value='ADD' className='login-btn' />
           </form>
-          <p style={{color: "white", paddingBottom: "2rem"}}>Currently we are only accepting YouTube links</p>
+          <p style={{color: "white", paddingBottom: "2rem"}}>
+            *Currently we are only accepting YouTube links
+          </p>
           {error && <p style={{color: "red", padding: "0.2 0"}}>{error}</p>}
         </div>
       </div>
