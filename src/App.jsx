@@ -27,7 +27,6 @@ function App() {
   const {user, setUser} = useAuth();
   const [isShowLogin, setIsShowLogin] = useState(false);
 
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [isLoop, setLoop] = useState(false);
   const [volume, setVolume] = useState(1);
@@ -95,7 +94,6 @@ function App() {
     setVideo(`//www.youtube.com/embed/${videoId}?autoplay=1&mute=1&start=1`);
     setStreamingLink({link, name});
     setIsStreaming(true);
-    setIsPlaying(true);
   };
 
   const handleEnd = () => {
@@ -174,9 +172,11 @@ function App() {
                       <img className='triangle' src={triangle} alt='' />
                       {station.name}
                     </span>
-                    <span onClick={() => deleteStation(station)} style={{float: "right", width: "20%"}}>
-                      <AiFillDelete />
-                    </span>
+                    {user && (
+                      <span onClick={() => deleteStation(station)} style={{float: "right", width: "20%"}}>
+                        <AiFillDelete />
+                      </span>
+                    )}
                   </motion.div>
                 </>
               );
@@ -211,12 +211,11 @@ function App() {
             whileHover={{scale: 1.03}}
             whileTap={{scale: 0.9}}
             onClick={() => {
-              setIsPlaying((prevState) => !prevState);
               setIsStreaming((prevState) => !prevState);
             }}
             className='playPause'
           >
-            {isPlaying ? (
+            {isStreaming ? (
               <img className='playBtn2' src={pauseImg} alt='pause' />
             ) : (
               <img className='playBtn' src={play} alt='play' />
@@ -256,7 +255,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div className={isPlaying ? "unpauseScreen" : "pauseScreen"}>
+      <div className={isStreaming ? "unpauseScreen" : "pauseScreen"}>
         <p style={{marginTop: "30rem"}}>Music Paused</p>
       </div>
       <AdditionSettings radio={streamingLink.name} link={streamingLink.link} />
