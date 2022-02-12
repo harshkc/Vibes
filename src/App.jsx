@@ -15,6 +15,7 @@ import LoginForm from "./components/LoginForm/LoginForm";
 import {useAuth} from "./context/AuthProvider";
 import {auth, db} from "./firebase";
 import {signOut} from "firebase/auth";
+import {getDocs, collection} from "firebase/firestore";
 import {defaultStations} from "./utils/defaultStations";
 import {AiOutlinePlus} from "react-icons/ai";
 import extractVideoId from "./utils/extractVideoId";
@@ -39,11 +40,28 @@ function App() {
   });
   const [showModal, setShowModal] = useState(false);
 
+  const addAStation = (newStation) => {
+    setTheStations((prevStations) => [newStation, ...prevStations]);
+  };
+
+  const getStations = async () => {
+    try {
+      const userStationsSnapshot = await getDocs(collection(db, "users", user.id, "user_stations"));
+      const adminStationsSnapshot = await getDocs(collection(db, "admin_stations"));
+      const userStations = userStationsSnapshot?.docs?.map((doc) => doc.data());
+      const adminStations = adminStationsSnapshot?.docs?.map((doc) => doc.data());
+      console.log({userStations, adminStations});
+      setTheStations([...userStations, ...adminStations]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   React.useEffect(() => {
     if (user !== null) {
-      console.log("hello");
+      getStations();
     }
-  });
+  }, []);
 
   const handleLoginClick = () => {
     setIsShowLogin((isShowLogin) => !isShowLogin);
@@ -111,14 +129,14 @@ function App() {
             {theStations.map((station) => {
               return (
                 <motion.div
-                  key={station.channelName}
+                  key={station.name}
                   whileHover={{scale: 1.09}}
                   whileTap={{scale: 0.9}}
-                  onClick={() => setMusicState(station.video, station.channelName)}
+                  onClick={() => setMusicState(station.link, station.name)}
                   className='station'
                 >
                   <img className='triangle' src={triangle} alt='' />
-                  {station.channelName}
+                  {station.name}
                 </motion.div>
               );
             })}
@@ -129,7 +147,7 @@ function App() {
         </a>
       </div>
       <div className='audioControlContainer'>
-        {user && <VibeForm showModal={showModal} setShowModal={setShowModal} />}
+        {user && <VibeForm showModal={showModal} setShowModal={setShowModal} addAStation={addAStation} />}
         {!user && <LoginForm isShowLogin={isShowLogin} setShowLogin={setIsShowLogin} />}
         <div className='audioControl'>
           <motion.div
