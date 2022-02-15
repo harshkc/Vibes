@@ -8,7 +8,7 @@
 
 .form-box {
   margin-top: 7vh;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: saturate(180%) blur(10px);
   padding-right: 80px;
   padding-left: 80px;
@@ -19,7 +19,6 @@
 .login-text {
   width: 100%;
   color: white;
-  border-bottom: 2px solid white;
   line-height: 30px;
   width: 100%;
   font-weight: bolder;
@@ -27,7 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 5vh;
+  padding-top: 2vh;
 }
 
 label {
@@ -38,12 +37,12 @@ label {
 
 .login-box {
   border: 1px solid lightgrey;
+  padding: 4px;
   display: flex;
   color: white;
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-  padding: 2px;
   padding-left: 10px;
   letter-spacing: 1px;
   font-weight: 600;
@@ -55,7 +54,7 @@ label {
 }
 
 .login-btn {
-  width: 75%;
+  width: 50%;
   justify-content: center;
   align-items: center;
   background-color: rgb(48, 172, 251);
@@ -63,8 +62,9 @@ label {
   margin-top: 5px;
   border-radius: 20px;
   border: none;
-  font-size: 15pt;
+  font-size: 13pt;
   font-weight: 700;
+  padding: 3px 0;
   transition: 1s;
   outline: none;
   cursor: pointer;

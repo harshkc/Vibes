@@ -3,6 +3,7 @@ import {useAuth} from "../../context/AuthProvider";
 import {auth, db} from "../../firebase";
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import {doc, setDoc, getDoc} from "firebase/firestore";
+import {AiOutlineCloseCircle} from "react-icons/ai";
 
 import "./loginform.css";
 
@@ -91,6 +92,12 @@ const LoginForm = ({isShowLogin, setShowLogin}) => {
         <div className='form-box solid'>
           <form onSubmit={handleSubmit}>
             <h1 className='login-text'>{isRegister ? "Register" : "Login"}</h1>
+            <div
+              onClick={() => setShowLogin(false)}
+              style={{position: "absolute", top: "5%", right: "5%", color: "white", cursor: "pointer"}}
+            >
+              <AiOutlineCloseCircle size={20} />
+            </div>
             <label htmlFor='email'>Email</label>
             <br></br>
             <input type='email' id='email' className='login-box' />
@@ -111,7 +118,7 @@ const LoginForm = ({isShowLogin, setShowLogin}) => {
           </form>
           {isRegister ? (
             <div style={{color: "white", paddingBottom: "2rem"}}>
-              Already have an account?
+              Already have an account?{" "}
               <span
                 style={{color: "rgb(48, 172, 251)", textDecoration: "underline", cursor: "pointer"}}
                 onClick={() => setIsRegister(false)}
@@ -121,7 +128,7 @@ const LoginForm = ({isShowLogin, setShowLogin}) => {
             </div>
           ) : (
             <div style={{color: "white", paddingBottom: "2rem"}}>
-              {"Don't"} have an account?
+              {"Don't"} have an account?{" "}
               <span
                 style={{color: "rgb(48, 172, 251)", textDecoration: "underline", cursor: "pointer"}}
                 onClick={() => setIsRegister(true)}

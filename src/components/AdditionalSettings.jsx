@@ -2,11 +2,9 @@ import React, {useEffect, useState, useRef} from "react";
 import RainASMR from "../Sounds/rain.mp3";
 import OceanASMR from "../Sounds/ocean.mp3";
 import waves from "../images/waves.png";
-import youtube from "../images/youtube.png";
 import rain from "../images/rain.png";
-import {motion} from "framer-motion";
 
-const AdditionSettings = ({radio, link}) => {
+const AdditionSettings = () => {
   const rainPlayer = useRef();
   const oceanPlayer = useRef();
 
@@ -18,19 +16,13 @@ const AdditionSettings = ({radio, link}) => {
   const [isRainPlaying, setRainPlaying] = useState(false);
   const [isOceanPlaying, setOceanPlaying] = useState(false);
 
-  const [transitionValue, setTransitionValue] = useState(0);
-  const [TitleLocation, setTitleLocation] = useState(350);
-
-  const setTransition = () => {
-    setTransitionValue(0);
-  };
-
   const toggleRainPlayer = () => {
     if (isRainPlaying) {
       rainPlayer.current.loop = false;
       rainPlayer.current.pause();
     } else {
       rainPlayer.current.play();
+      rainPlayer.current.volume = 0.6;
       rainPlayer.current.loop = true;
     }
 
@@ -43,37 +35,16 @@ const AdditionSettings = ({radio, link}) => {
       oceanPlayer.current.pause();
     } else {
       oceanPlayer.current.play();
+      oceanPlayer.current.volume = 0.5;
       oceanPlayer.current.loop = true;
     }
 
     setOceanPlaying((prev) => !prev);
   };
 
-  setTimeout(function () {
-    setTransitionValue(-450); //Title Pop in and out
-    setTitleLocation(420);
-  }, 2000);
-
-  useEffect(() => {
-    setTransition();
-    setTitleLocation(1000);
-  }, [radio]);
-
   return (
     <div className='infoContainer'>
-      <div className='songName'>
-        <motion.div
-          animate={{x: transitionValue}}
-          transition={{delay: 1}}
-          className='radioStationTitle'
-          style={{left: TitleLocation}}
-        >
-          {radio}
-          <a href={link} target='_blank' rel='noopener noreferrer' className='socialsContainer'>
-            <img src={youtube} className='socialIcons' alt='' />
-          </a>
-        </motion.div>
-      </div>
+      <div style={{minWidth: "100%", height: "99%"}}></div>
       <div className='otherSoundsContainer'>
         <div className='allign' onClick={toggleRainPlayer}>
           <div className='otherSounds' style={!isRainPlaying ? {borderColor: "red"} : {}}>
