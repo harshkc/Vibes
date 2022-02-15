@@ -20,6 +20,8 @@ import {AiOutlinePlus, AiFillDelete} from "react-icons/ai";
 import extractVideoId from "./utils/extractVideoId";
 import VibeForm from "./components/VibeForm/VibeForm";
 import Session from "./components/Pomodoro/Session";
+import TodoList from "./components/Todo/TodoList";
+import SongName from "./components/SongName";
 
 let lastPlayedVolume = 0;
 
@@ -187,6 +189,14 @@ function App() {
       <div style={{position: "absolute", right: "3rem", top: "5rem", zIndex: "1"}}>
         <Session />
       </div>
+      <div style={{position: "absolute", right: "2rem", top: "40%", zIndex: "1"}}>
+        <div className='todo-app'>
+          <TodoList />
+        </div>
+      </div>
+      <div style={{position: "absolute", right: "60%", top: "70%"}}>
+        <SongName radio={streamingLink.name} link={streamingLink.link} />
+      </div>
       <div className='audioControlContainer'>
         {user && (
           <VibeForm
@@ -202,7 +212,7 @@ function App() {
             whileHover={{scale: 1.09}}
             whileTap={{scale: 0.9}}
             className='volumeOn'
-            style={{border: isLoop ? "1px solid green" : "1px solid white"}}
+            style={{border: isLoop ? "1px solid white" : "1px solid red"}}
             onClick={() => setLoop(!isLoop)}
           >
             <img className='audioOnImg' src={loopImg} alt='loop' />
@@ -258,7 +268,7 @@ function App() {
       <div className={isStreaming ? "unpauseScreen" : "pauseScreen"}>
         <p style={{marginTop: "30rem"}}>Music Paused</p>
       </div>
-      <AdditionSettings radio={streamingLink.name} link={streamingLink.link} />
+      <AdditionSettings />
       <div className='videoContainer'>
         <iframe
           className='vid'

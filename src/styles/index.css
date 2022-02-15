@@ -35,12 +35,12 @@ body {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: saturate(180%) blur(10px);
   max-height: 90%;
-  box-shadow: 1px 0px 0 white;
+  margin: 1rem 0 0 0.7rem;
   text-align: center;
   display: flex;
   justify-content: end;
   z-index: 1;
-  padding: 0.5rem 0 1rem 0;
+  padding: 1rem 0 1.5rem 0;
   overflow-x: hidden;
   white-space: wrap;
   scrollbar-width: none;
@@ -209,6 +209,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: end;
+  cursor: pointer;
 }
 
 .otherSounds {
@@ -389,6 +390,21 @@ input[type="range"][orient="vertical"] {
   bottom: -120px;
   letter-spacing: 4px;
 }
+
+.todo-app {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 270px;
+  height: 300px;
+  margin-top: 2rem;
+  text-align: center;
+  border-radius: 10px;
+  padding-bottom: 32px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: saturate(180%) blur(10px);
+}
+
 /* Animation */
 @keyframes circle {
   0% {
