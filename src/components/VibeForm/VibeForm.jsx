@@ -3,6 +3,7 @@ import {useAuth} from "../../context/AuthProvider";
 import extractVideoId from "../../utils/extractVideoId";
 import {db} from "../../firebase";
 import {doc, setDoc} from "firebase/firestore";
+import {AiOutlineCloseCircle} from "react-icons/ai";
 
 import "./vibeForm.css";
 
@@ -80,7 +81,15 @@ const VibeForm = ({showModal, setShowModal, addAStation, theStations}) => {
       <div className='login-form'>
         <div className='form-box solid'>
           <form onSubmit={handleSubmit}>
-            <h1 className='login-text'>Add Your Vibe</h1>
+            <h1 style={{marginTop: "3vh"}} className='login-text'>
+              Add Your Vibe
+            </h1>
+            <div
+              onClick={() => setShowModal(false)}
+              style={{position: "absolute", top: "5%", right: "5%", color: "white", cursor: "pointer"}}
+            >
+              <AiOutlineCloseCircle size={20} />
+            </div>
             <label htmlFor='name'>Vibe name</label>
             <br></br>
             <input type='text' id='name' className='login-box' />
@@ -91,7 +100,7 @@ const VibeForm = ({showModal, setShowModal, addAStation, theStations}) => {
             <br></br>
             <input type='submit' value='ADD' className='login-btn' />
           </form>
-          <p style={{color: "white", paddingBottom: "2rem"}}>
+          <p style={{color: "white", paddingBottom: "0.2rem"}}>
             *Currently we are only accepting YouTube links
           </p>
           {error && <p style={{color: "red", padding: "0.2 0"}}>{error}</p>}
