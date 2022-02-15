@@ -9,6 +9,12 @@ function TodoForm(props) {
     inputRef.current.focus();
   });
 
+  function uuid() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+      (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+    );
+  }
+
   const handleChange = (e) => {
     setInput(e.target.value);
   };
@@ -17,8 +23,9 @@ function TodoForm(props) {
     e.preventDefault();
 
     props.onSubmit({
-      id: Math.floor(Math.random() * 10000),
+      id: props?.editId ?? uuid(),
       text: input,
+      isComplete: false,
     });
     setInput("");
   };
@@ -26,14 +33,19 @@ function TodoForm(props) {
   return (
     <form onSubmit={handleSubmit} className='todo-form'>
       {props.edit ? (
-        <input
-          placeholder='Update your item'
-          value={input}
-          onChange={handleChange}
-          name='text'
-          ref={inputRef}
-          className='todo-input edit'
-        />
+        <>
+          <input
+            placeholder='Update your item'
+            value={input}
+            onChange={handleChange}
+            name='text'
+            ref={inputRef}
+            className='todo-input edit'
+          />
+          <button onClick={handleSubmit} className='edit-button'>
+            Update
+          </button>
+        </>
       ) : (
         <input
           placeholder='Add a todo'
