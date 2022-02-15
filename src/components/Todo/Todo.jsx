@@ -17,23 +17,21 @@ const Todo = ({todos, completeTodo, removeTodo, updateTodo}) => {
   };
 
   if (edit.id) {
-    return <TodoForm edit={edit} onSubmit={submitUpdate} />;
+    return <TodoForm edit={edit} onSubmit={submitUpdate} editId={edit.id} />;
   }
 
   return (
     <div className='todos-container'>
       {todos.map((todo, index) => (
-        <div
-          className={todo.isComplete ? "todo-row complete" : "todo-row"}
-          onClick={() => completeTodo(todo.id)}
-          key={index}
-        >
-          <div key={todo.id}>{todo.text}</div>
+        <div className={todo.isComplete ? "todo-row complete" : "todo-row"} key={index}>
+          <div onClick={() => completeTodo(todo.id)} key={todo.id}>
+            {todo.text}
+          </div>
           <div className='icons'>
             <AiOutlineCloseCircle onClick={() => removeTodo(todo.id)} className='delete-icon' />
             <AiTwotoneEdit
               size='23'
-              onClick={() => setEdit({id: todo.id, value: todo.text})}
+              onClick={() => setEdit({id: todo.id, value: todo.text, isComplete: todo.isComplete})}
               className='edit-icon'
             />
           </div>

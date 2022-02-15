@@ -13,8 +13,8 @@ A clean application aimed to increase your productivity with a completely custom
 
 ## Overview  
 
-![VibeSS](https://i.imgur.com/kVDEjd9.png)
-![VibeSS1](https://i.imgur.com/pJtFBI6.png)
+![VibeSS](https://i.imgur.com/2FUeKId.png)
+![VibeSS1](https://i.imgur.com/aDdqLDi.png)
 
 ## Features 
 

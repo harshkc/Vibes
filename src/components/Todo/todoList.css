@@ -32,6 +32,15 @@
   border: 2px solid #149fff;
 }
 
+.edit-button {
+  background: linear-gradient(90deg, rgba(20, 159, 255, 1) 0%, rgba(17, 122, 255, 1) 100%);
+  margin-top: 0.5rem;
+  color: white;
+  font-size: 0.8rem;
+  padding: 0.8rem;
+  border-radius: 5%;
+}
+
 .todo-container {
   display: flex;
   flex-direction: row;
