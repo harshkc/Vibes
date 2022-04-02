@@ -115,6 +115,29 @@ const LoginForm = ({isShowLogin, setShowLogin}) => {
               </>
             )}
             <input type='submit' value={isRegister ? "Register" : "Login"} className='login-btn' />
+            {!isRegister && (
+              <input
+                type='button'
+                value='Guest'
+                className='guest-btn'
+                onClick={() => {
+                  let synEvent = {
+                    preventDefault: () => {},
+                    target: {
+                      elements: {
+                        email: {
+                          value: "test@test.com",
+                        },
+                        password: {
+                          value: "test@1234",
+                        },
+                      },
+                    },
+                  };
+                  handleSubmit(synEvent);
+                }}
+              />
+            )}
           </form>
           {isRegister ? (
             <div style={{color: "white", paddingBottom: "2rem"}}>
