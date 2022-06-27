@@ -1,6 +1,7 @@
  <img width="60" src="images/vibes_logo.png"> 
 
 # Vibes
+<strong>Productivity like never before</strong>
 
 ![React Badge](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)
@@ -9,7 +10,7 @@
 
 ## What is Vibes?
 
-A clean application aimed to increase your productivity with a completely customizable collection of lo-fi, anime vibe stations and inbuilt pomodoro timer.
+A clean and beautiful application which helps you to achieve the focused flow-state and get it done. Listen to a plethora of lo-fi stations also add or remove your own. Manage your session goals with in-built pomodoro timer and tasks manager.
 
 ## Overview  
 
